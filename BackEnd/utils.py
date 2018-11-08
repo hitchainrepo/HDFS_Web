@@ -3,6 +3,7 @@ import random
 import os
 import shutil
 import configparser
+import HDFS_Web.contexts as contexts
 
 def getCurrentTime():
     create_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -48,24 +49,25 @@ def createLocalRepository(repoInfo, userInfo):
 
     os.system("git init %s" % (dirPath)) # git init the path
 
-    hitPath = os.path.join(dirPath, ".hit")
-
-    mkdir(hitPath)
-    configPath = os.path.join(hitPath, "config")
-    cf = configparser.ConfigParser()
-    cf.read(configPath)
-    cf.add_section("remote \"origin\"")
-    cf.set("remote \"origin\"", "repoName", reponame)
-    cf.set("remote \"origin\"", "userName", username)
-    with open(configPath, "w+") as f:
-        cf.write(f)
+    # hitPath = os.path.join(dirPath, ".hit")
+    #
+    # mkdir(hitPath)
+    # configPath = os.path.join(hitPath, "config")
+    # cf = configparser.ConfigParser()
+    # cf.read(configPath)
+    # cf.add_section("remote \"origin\"")
+    # cf.set("remote \"origin\"", "repoName", reponame)
+    # cf.set("remote \"origin\"", "userName", username)
+    # cf.set("remote \"origin\"", "url", "http://" + contexts.globalVariables()["webUrl"] + "/" + username + "/" +reponame + ".hit")
+    # with open(configPath, "w+") as f:
+    #     cf.write(f)
 
     cwd = os.getcwd()
 
-    os.chdir(dirPath)
-    os.system("git add .")
-    os.system("git commit -m 'hit init'")
-    os.chdir(cwd)
+    # os.chdir(dirPath)
+    # os.system("git add .")
+    # os.system("git commit -m 'hit init'")
+    # os.chdir(cwd)
 
     cloneRepoPath = dirPath + "_clone"
     os.system("git clone --bare %s %s" % (dirPath, cloneRepoPath))
