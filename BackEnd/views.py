@@ -275,6 +275,7 @@ def webservice(request):
     if request.method == 'POST':
         try:
             data = JSONParser().parse(request)
+            print(data)
             if "method" not in data:
                 content = {"response": responseList["request"]}
                 return JsonResponse(data=content, status=status.HTTP_200_OK)
@@ -367,6 +368,26 @@ def webservice(request):
                         else:
                             content = {"response":responseList["user"]}
                             return JsonResponse(data=content, status=status.HTTP_200_OK)
+                elif method == "reportStorage":
+                    if "RepoSize" not in data or "StorageMax" not in data or "nodeId" not in data:
+                        content = {"response": responseList["request"]}
+                        return JsonResponse(data=content, status=status.HTTP_200_OK)
+                    else:
+                        repoSize = data["RepoSize"]
+                        storageMax = data["StorageMax"]
+                        nodeId = data["nodeId"]
+
+                        # update the records in database
+                        reportItem = StorageReport()
+                        reportItem.node_id = nodeId
+                        reportItem.repo_size = repoSize
+                        reportItem.storage_size = storageMax
+                        currentTime = getCurrentTime()
+                        reportItem.create_time = currentTime
+                        reportItem.save()
+
+                        content = {"response":responseList["success"]}
+                        return JsonResponse(data=content, status=status.HTTP_200_OK)
                 else:
                     content = {"response":responseList["request"]}
                     return JsonResponse(data=content, status=status.HTTP_400_BAD_REQUEST)

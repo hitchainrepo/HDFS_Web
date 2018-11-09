@@ -22,3 +22,14 @@ class Authority(models.Model):
         return self.username
     class Meta:
         db_table = "authority"
+
+class StorageReport(models.Model):
+    node_id = models.CharField(max_length=255)
+    repo_size = models.BigIntegerField()
+    storage_size = models.BigIntegerField()
+    create_time = models.DateTimeField()
+
+    def __str__(self):
+        return self.node_id
+    class Meta:
+        db_table = "storage_report"
