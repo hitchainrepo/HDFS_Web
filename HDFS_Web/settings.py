@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'BackEnd',
 
     'rest_framework',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static/"),
 )
 # STATIC_ROOT = os.path.join(BASE_DIR, "static_common")
+
+
+CRONJOBS = [
+    ('*/1 * * * *', 'BackEnd.cron_job.cron_check_storage', [], {},''), # every XX minutes
+]
