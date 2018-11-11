@@ -33,3 +33,13 @@ class StorageReport(models.Model):
         return self.node_id
     class Meta:
         db_table = "storage_report"
+
+class StorageCheck(models.Model):
+    node_id = models.CharField(max_length=255)
+    ping_result = models.BooleanField()
+    create_time = models.DateTimeField()
+
+    def __str__(self):
+        return self.node_id
+    class Meta:
+        db_table = "storage_check"

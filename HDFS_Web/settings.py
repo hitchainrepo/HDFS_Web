@@ -138,5 +138,5 @@ STATICFILES_DIRS = (
 
 
 CRONJOBS = [
-    ('*/1 * * * *', 'BackEnd.cron_job.cron_check_storage', [], {},''), # every XX minutes
+    ('*/59 * * * *', 'BackEnd.cron_job.cron_check_storage', [], {},''), # every 59 minutes
 ]
