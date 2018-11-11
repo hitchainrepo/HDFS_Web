@@ -2,7 +2,8 @@
 
 from BackEnd.models import *
 from BackEnd.utils import *
-from urllib.request import Request, urlopen
+import requests
+import json
 
 def cron_check_storage():
     nodeIds = StorageReport.objects.values_list('node_id').order_by('-id')
@@ -14,17 +15,22 @@ def cron_check_storage():
 
     for nodeId in nodeIdList:
         reqUrl = "http://localhost:5001/api/v0/ping?arg=" + nodeId + "&count=1"
-        req = Request(reqUrl)
         currentTime = getCurrentTime()
         storageCheckItem = StorageCheck()
         storageCheckItem.node_id = nodeId
         storageCheckItem.create_time = currentTime
         try:
-            response = urlopen(req)
-            if response.status == 200:
-                storageCheckItem.ping_result = True
+            req = requests.get(reqUrl)
+            response = req.text
+            responseLastLine = response.splitlines()[-1]
+            responseJson = json.loads(responseLastLine)
+            if "Success" not in responseJson:
+                storageCheckItem.ping_result = 0
             else:
-                storageCheckItem.ping_result = False
+                if responseJson["Success"] == True:
+                    storageCheckItem.ping_result = 1
+                else:
+                    storageCheckItem.ping_result = 0
         except Exception as e:
-            storageCheckItem.ping_result = False
+            storageCheckItem.ping_result = -1
         storageCheckItem.save()
