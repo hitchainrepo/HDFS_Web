@@ -388,7 +388,8 @@ def webservice(request):
 
                         content = {"response":responseList["success"]}
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
-                elif method == "checkUserInfo":
+                # check username and password:
+                elif method == "checkUserPassword":
                     if "username" not in data or "password" not in data:
                         content = {"response": responseList["request"]}
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
@@ -398,7 +399,9 @@ def webservice(request):
                         user = auth.authenticate(username = username,password = password)
                         if user:
                             content = {"response":responseList["success"]}
-                            return JsonResponse(data=content, status=status.HTTP_200_OK)
+                        else:
+                            content = {"response":responseList["user"]}
+                        return JsonResponse(data=content, status=status.HTTP_200_OK)
 
                 else:
                     content = {"response":responseList["request"]}
