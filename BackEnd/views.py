@@ -403,6 +403,7 @@ def webservice(request):
                             content = {"response":responseList["user"]}
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
 
+                # check username password and authority
                 elif method == "checkUserPasswordRepo":
                     if "username" not in data or "password" not in data or "reponame" not in data or "ownername" not in data:
                         content = {"response": responseList["request"]}
