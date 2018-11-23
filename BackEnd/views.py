@@ -403,6 +403,35 @@ def webservice(request):
                             content = {"response":responseList["user"]}
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
 
+                elif method == "checkUserPasswordRepo":
+                    if "username" not in data or "password" not in data or "reponame" not in data or "ownername" not in data:
+                        content = {"response": responseList["request"]}
+                        return JsonResponse(data=content, status=status.HTTP_200_OK)
+                    else:
+                        username = data["username"]
+                        password = data["password"]
+                        reponame = data["reponame"]
+                        ownername = data["ownername"]
+                        user = auth.authenticate(username = username,password = password)
+                        if user:
+                            ownerItem = Repo.objects.filter(username=ownername, reponame=reponame)
+                            if len(ownerItem) <= 0:
+                                content = {"response":responseList["repo"]}
+                                return JsonResponse(data=content, status=status.HTTP_200_OK)
+                            else:
+                                ownerItem = ownerItem[0]
+                                repoId = ownerItem.id
+                                authorityItem = Authority.objects.filter(repo_id=repoId, username=username)
+                                if authorityItem:
+                                    content = {"response":responseList["success"]}
+                                    return JsonResponse(data=content, status=status.HTTP_200_OK)
+                                else:
+                                    content = {"response":responseList["auth"]}
+                                    return JsonResponse(data=content, status=status.HTTP_200_OK)
+                        else:
+                            content = {"response":responseList["user"]}
+                            return JsonResponse(data=content, status=status.HTTP_200_OK)
+
                 else:
                     content = {"response":responseList["request"]}
                     return JsonResponse(data=content, status=status.HTTP_400_BAD_REQUEST)
