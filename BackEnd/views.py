@@ -390,9 +390,9 @@ def webservice(request):
                         item = items[0]
                         publicKey = item.public_key
 
-                        verifyResult = verify_sign(public_key_loc=publicKey, signature=repoSizeSign, data=repoSize)
+                        verifyResult = verify_sign(pub_key=publicKey, signature=repoSizeSign, data=repoSize)
                         print(verifyResult)
-                        verifyResult = verify_sign(public_key_loc=publicKey, signature=storageMaxSign, data=storageMax)
+                        verifyResult = verify_sign(pub_key=publicKey, signature=storageMaxSign, data=storageMax)
                         print(verifyResult)
 
                         # # update the records in database
