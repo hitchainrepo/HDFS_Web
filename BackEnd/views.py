@@ -451,7 +451,7 @@ def webservice(request):
                             item.node_id = nodeId
                             item.public_key = pubKey
                             item.create_time = currentTime
-                            item.update_time = None
+                            # item.update_time = None
                             item.save()
                         else:
                             print("already has temporary pub key")
