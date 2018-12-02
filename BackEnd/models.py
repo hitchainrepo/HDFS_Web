@@ -43,3 +43,14 @@ class StorageCheck(models.Model):
         return self.node_id
     class Meta:
         db_table = "storage_check"
+
+class TemporaryPubKey(models.Model):
+    node_id = models.CharField(max_length=255)
+    public_key = models.CharField(max_length=255)
+    create_time = models.DateTimeField()
+    update_time = models.DateTimeField()
+
+    def __str__(self):
+        return self.node_id
+    class Meta:
+        db_table = "temporary_public_key"
