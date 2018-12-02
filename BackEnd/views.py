@@ -377,14 +377,18 @@ def webservice(request):
                         storageMax = data["StorageMax"]
                         nodeId = data["nodeId"]
 
-                        # update the records in database
-                        reportItem = StorageReport()
-                        reportItem.node_id = nodeId
-                        reportItem.repo_size = repoSize
-                        reportItem.storage_size = storageMax
-                        currentTime = getCurrentTime()
-                        reportItem.create_time = currentTime
-                        reportItem.save()
+                        print(repoSize)
+                        print(storageMax)
+                        print(nodeId)
+
+                        # # update the records in database
+                        # reportItem = StorageReport()
+                        # reportItem.node_id = nodeId
+                        # reportItem.repo_size = repoSize
+                        # reportItem.storage_size = storageMax
+                        # currentTime = getCurrentTime()
+                        # reportItem.create_time = currentTime
+                        # reportItem.save()
 
                         content = {"response":responseList["success"]}
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
