@@ -7,7 +7,8 @@ import configparser
 import HDFS_Web.contexts as contexts
 
 def getCurrentTime():
-    create_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S', tzinfo=pytz.UTC)
+    utc_tz = pytz.timezone('UTC')
+    create_time = datetime.datetime.now(tz=utc_tz).strftime('%Y-%m-%d %H:%M:%S')
     return create_time
 
 
