@@ -46,7 +46,7 @@ class StorageCheck(models.Model):
 
 class TemporaryPubKey(models.Model):
     node_id = models.CharField(max_length=255)
-    public_key = models.CharField(max_length=255)
+    public_key = models.TextField()
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now_add=True)
 
