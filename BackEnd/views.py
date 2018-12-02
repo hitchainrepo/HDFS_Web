@@ -440,11 +440,15 @@ def webservice(request):
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
                     else:
                         pubKey = data["pubKey"]
+                        print(pubKey)
                         nodeId = data["nodeId"]
+                        print(nodeId)
                         currentTime = getCurrentTime()
 
                         # check node Id
                         temporaryPubKeyItem = TemporaryPubKey.objects.filter(node_id=nodeId)
+                        print(temporaryPubKeyItem)
+                        print(len(temporaryPubKeyItem))
                         if temporaryPubKeyItem:
                             print("no temporary pub key")
                             item = TemporaryPubKey()
