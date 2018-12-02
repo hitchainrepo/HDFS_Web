@@ -452,16 +452,13 @@ def webservice(request):
                             item.create_time = currentTime
                             item.update_time = currentTime
                             item.save()
-                            content = {"reponse": responseList["success"]}
-                            return JsonResponse(data=content, status=status.HTTP_200_OK)
                         else:
                             temporaryPubKeyItem = temporaryPubKeyItem[0]
                             temporaryPubKeyItem.public_key = pubKey
                             temporaryPubKeyItem.update_time = currentTime
                             temporaryPubKeyItem.save()
-                            print("success")
-                            content = {"reponse": responseList["success"]}
-                            return JsonResponse(data=content, status=status.HTTP_200_OK)
+                        content = {"response": responseList["success"]}
+                        return JsonResponse(data=content, status=status.HTTP_200_OK)
 
                 else:
                     content = {"response":responseList["request"]}
