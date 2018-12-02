@@ -2,13 +2,12 @@ import datetime
 import random
 import os
 import shutil
-import pytz
+from django.utils.timezone import utc
 import configparser
 import HDFS_Web.contexts as contexts
 
 def getCurrentTime():
-    utc_tz = pytz.timezone('UTC')
-    create_time = datetime.datetime.now(tz=utc_tz).strftime('%Y-%m-%d %H:%M:%S')
+    create_time = datetime.datetime.utcnow().replace(tzinfo=utc)
     return create_time
 
 
@@ -91,3 +90,8 @@ def createIpfsRepository(repoInfo, userInfo):
     shutil.rmtree(repoPath) # after added to ipfs net, remove the local repo
     shutil.rmtree(cloneRepoPath)
     return newRepoHash
+
+
+if __name__ == "__main__":
+    result = getCurrentTime()
+    print(result)
