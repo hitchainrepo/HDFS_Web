@@ -452,18 +452,22 @@ def webservice(request):
                             item.create_time = currentTime
                             item.update_time = currentTime
                             item.save()
+                            content = {"reponse": responseList["success"]}
+                            return JsonResponse(data=content, status=status.HTTP_200_OK)
                         else:
                             temporaryPubKeyItem = temporaryPubKeyItem[0]
                             temporaryPubKeyItem.public_key = pubKey
                             temporaryPubKeyItem.update_time = currentTime
                             temporaryPubKeyItem.save()
-                        content = {"reponse": responseList["success"]}
-                        return JsonResponse(data=content, status=status.HTTP_200_OK)
+                            print("success")
+                            content = {"reponse": responseList["success"]}
+                            return JsonResponse(data=content, status=status.HTTP_200_OK)
 
                 else:
                     content = {"response":responseList["request"]}
                     return JsonResponse(data=content, status=status.HTTP_400_BAD_REQUEST)
-        except Exception:
+        except Exception as e:
+            print(e)
             content = {"response": responseList["json"]}
             return JsonResponse(data=content, status=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
     elif request.method == 'GET':
