@@ -4,7 +4,7 @@ class Repo(models.Model):
     username = models.CharField(max_length=255)
     reponame = models.CharField(max_length=255)
     ipfs_hash = models.CharField(max_length=255)
-    create_time = models.DateTimeField()
+    create_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.username
@@ -16,7 +16,7 @@ class Authority(models.Model):
     username = models.CharField(max_length=255)
     repo_id = models.IntegerField()
     user_type = models.CharField(max_length=255, default="owner")
-    create_time = models.DateTimeField()
+    create_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.username
@@ -27,7 +27,7 @@ class StorageReport(models.Model):
     node_id = models.CharField(max_length=255)
     repo_size = models.BigIntegerField()
     storage_size = models.BigIntegerField()
-    create_time = models.DateTimeField()
+    create_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.node_id
@@ -37,7 +37,7 @@ class StorageReport(models.Model):
 class StorageCheck(models.Model):
     node_id = models.CharField(max_length=255)
     ping_result = models.IntegerField()
-    create_time = models.DateTimeField()
+    create_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.node_id
@@ -47,8 +47,8 @@ class StorageCheck(models.Model):
 class TemporaryPubKey(models.Model):
     node_id = models.CharField(max_length=255)
     public_key = models.CharField(max_length=255)
-    create_time = models.DateTimeField()
-    update_time = models.DateTimeField()
+    create_time = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.node_id
