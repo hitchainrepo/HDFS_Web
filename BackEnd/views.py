@@ -446,8 +446,7 @@ def webservice(request):
 
                         # check node Id
                         temporaryPubKeyItem = TemporaryPubKey.objects.filter(node_id=nodeId)
-                        print(len(temporaryPubKeyItem))
-                        if temporaryPubKeyItem:
+                        if len(temporaryPubKeyItem) == 0:
                             print("no temporary pub key")
                             item = TemporaryPubKey()
                             item.node_id = nodeId
