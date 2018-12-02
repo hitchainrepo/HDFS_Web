@@ -271,6 +271,7 @@ def webservice(request):
         "request": "bad request",
         "get": "do not support get request",
         "exist": "repo already exists",
+        "nodeId": "something wrong with the node id, try restarting the daemon process"
     }
     if request.method == 'POST':
         try:
@@ -369,17 +370,31 @@ def webservice(request):
                             content = {"response":responseList["user"]}
                             return JsonResponse(data=content, status=status.HTTP_200_OK)
                 elif method == "reportStorage":
-                    if "RepoSize" not in data or "StorageMax" not in data or "nodeId" not in data:
+                    if "RepoSize" not in data or "StorageMax" not in data or "nodeId" not in data or "RepoSizeSign" not in data or "StorageMaxSign" not in data:
                         content = {"response": responseList["request"]}
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
                     else:
                         repoSize = data["RepoSize"]
                         storageMax = data["StorageMax"]
+                        repoSizeSign = data["RepoSizeSign"]
+                        storageMaxSign = data["StorageMaxSign"]
                         nodeId = data["nodeId"]
 
-                        print(repoSize)
-                        print(storageMax)
-                        print(nodeId)
+                        # get the public key
+                        items = TemporaryPubKey.objects.filter(node_id=nodeId)
+                        if len(items) == 0:
+                            content = {"response":responseList["nodeId"]}
+                            return JsonResponse(data=content, status=status.HTTP_200_OK)
+                        elif len(items) > 1:
+                            print("find same node id in TemporaryPubKey: " + nodeId)
+                        item = items[0]
+                        publicKey = item.public_key
+                        print(publicKey)
+
+                        verifyResult = verify_sign(public_key_loc=publicKey, signature=repoSizeSign, data=repoSize)
+                        print(verifyResult)
+                        verifyResult = verify_sign(public_key_loc=publicKey, signature=storageMaxSign, data=storageMax)
+                        print(verifyResult)
 
                         # # update the records in database
                         # reportItem = StorageReport()
