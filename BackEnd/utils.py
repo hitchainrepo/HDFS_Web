@@ -2,11 +2,12 @@ import datetime
 import random
 import os
 import shutil
+import pytz
 import configparser
 import HDFS_Web.contexts as contexts
 
 def getCurrentTime():
-    create_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    create_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S', tzinfo=pytz.UTC)
     return create_time
 
 
