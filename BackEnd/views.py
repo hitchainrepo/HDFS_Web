@@ -433,6 +433,34 @@ def webservice(request):
                             content = {"response":responseList["user"]}
                             return JsonResponse(data=content, status=status.HTTP_200_OK)
 
+                # add or update temporary pub key
+                elif method == "addTemporaryPubKey":
+                    if "pubKey" not in data or "nodeId" not in data:
+                        content = {"response": responseList["request"]}
+                        return JsonResponse(data=content, status=status.HTTP_200_OK)
+                    else:
+                        pubKey = data["pubKey"]
+                        nodeId = data["nodeId"]
+                        currentTime = getCurrentTime()
+
+                        # check node Id
+                        temporaryPubKeyItem = TemporaryPubKey.objects.filter(node_id=nodeId)
+                        if len(temporaryPubKeyItem) == 0:
+                            print("no temporary pub key")
+                            item = TemporaryPubKey()
+                            item.node_id = nodeId
+                            item.public_key = pubKey
+                            item.create_time = currentTime
+                            item.update_time = None
+                            item.save()
+                        else:
+                            print("already has temporary pub key")
+                            temporaryPubKeyItem = temporaryPubKeyItem[0]
+                            temporaryPubKeyItem.update_time = currentTime
+                            temporaryPubKeyItem.save()
+                        content = {"reponse": responseList["success"]}
+                        return JsonResponse(data=content, status=status.HTTP_200_OK)
+
                 else:
                     content = {"response":responseList["request"]}
                     return JsonResponse(data=content, status=status.HTTP_400_BAD_REQUEST)
