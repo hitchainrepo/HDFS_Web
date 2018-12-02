@@ -7,7 +7,7 @@ import configparser
 import HDFS_Web.contexts as contexts
 
 def getCurrentTime():
-    create_time = datetime.datetime.utcnow().replace(tzinfo=utc)
+    create_time = datetime.datetime.utcnow()
     return create_time
 
 

@@ -442,12 +442,10 @@ def webservice(request):
                         pubKey = data["pubKey"]
                         nodeId = data["nodeId"]
                         currentTime = getCurrentTime()
-                        print(currentTime)
 
                         # check node Id
                         temporaryPubKeyItem = TemporaryPubKey.objects.filter(node_id=nodeId)
                         if len(temporaryPubKeyItem) == 0:
-                            print("no temporary pub key")
                             item = TemporaryPubKey()
                             item.node_id = nodeId
                             item.public_key = pubKey
@@ -455,7 +453,6 @@ def webservice(request):
                             item.update_time = currentTime
                             item.save()
                         else:
-                            print("already has temporary pub key")
                             temporaryPubKeyItem.update_time = currentTime
                             temporaryPubKeyItem.save()
                         content = {"reponse": responseList["success"]}
