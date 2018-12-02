@@ -382,8 +382,6 @@ def webservice(request):
 
                         # get the public key
                         items = TemporaryPubKey.objects.filter(node_id=nodeId)
-                        print(items)
-                        print(len(items))
                         if len(items) == 0:
                             content = {"response":responseList["nodeId"]}
                             return JsonResponse(data=content, status=status.HTTP_200_OK)
@@ -391,7 +389,6 @@ def webservice(request):
                             print("find same node id in TemporaryPubKey: " + nodeId)
                         item = items[0]
                         publicKey = item.public_key
-                        print(publicKey)
 
                         verifyResult = verify_sign(public_key_loc=publicKey, signature=repoSizeSign, data=repoSize)
                         print(verifyResult)
