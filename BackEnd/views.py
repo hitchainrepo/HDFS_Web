@@ -453,6 +453,8 @@ def webservice(request):
                             item.update_time = currentTime
                             item.save()
                         else:
+                            temporaryPubKeyItem = temporaryPubKeyItem[0]
+                            temporaryPubKeyItem.public_key = pubKey
                             temporaryPubKeyItem.update_time = currentTime
                             temporaryPubKeyItem.save()
                         content = {"reponse": responseList["success"]}
