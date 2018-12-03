@@ -271,7 +271,10 @@ def webservice(request):
         "request": "bad request",
         "get": "do not support get request",
         "exist": "repo already exists",
-        "nodeId": "something wrong with the node id, try restarting the daemon process"
+        "nodeId": "something wrong with the node id, try restarting the daemon process",
+        "storage": "wrong storage, try re-initializing the repo",
+        "mediaType": "unsupported media type",
+        "unknown": "something goes wrong!"
     }
     if request.method == 'POST':
         try:
@@ -390,21 +393,24 @@ def webservice(request):
                         item = items[0]
                         publicKey = item.public_key
                         publicKey = base64.b64decode(publicKey)
-                        print(publicKey)
 
                         verifyResult = verify_sign(pub_key=publicKey, signature=repoSizeSign, data=repoSize)
-                        print(verifyResult)
+                        if verifyResult == False:
+                            content = {"response":responseList["storage"]}
+                            return JsonResponse(data=content, status=status.HTTP_200_OK)
                         verifyResult = verify_sign(pub_key=publicKey, signature=storageMaxSign, data=storageMax)
-                        print(verifyResult)
+                        if verifyResult == False:
+                            content = {"response":responseList["storage"]}
+                            return JsonResponse(data=content, status=status.HTTP_200_OK)
 
-                        # # update the records in database
-                        # reportItem = StorageReport()
-                        # reportItem.node_id = nodeId
-                        # reportItem.repo_size = repoSize
-                        # reportItem.storage_size = storageMax
-                        # currentTime = getCurrentTime()
-                        # reportItem.create_time = currentTime
-                        # reportItem.save()
+                        # update the records in database
+                        reportItem = StorageReport()
+                        reportItem.node_id = nodeId
+                        reportItem.repo_size = repoSize
+                        reportItem.storage_size = storageMax
+                        currentTime = getCurrentTime()
+                        reportItem.create_time = currentTime
+                        reportItem.save()
 
                         content = {"response":responseList["success"]}
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
@@ -483,9 +489,8 @@ def webservice(request):
                 else:
                     content = {"response":responseList["request"]}
                     return JsonResponse(data=content, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            print(e)
-            content = {"response": responseList["json"]}
+        except Exception:
+            content = {"response": responseList["unknown"]}
             return JsonResponse(data=content, status=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
     elif request.method == 'GET':
         content = {'response': responseList["get"]}
