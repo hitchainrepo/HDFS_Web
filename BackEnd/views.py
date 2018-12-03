@@ -398,13 +398,17 @@ def webservice(request):
 
                         repoSize = str(base64.b64decode(repoSize))
                         storageMax = str(base64.b64decode(storageMax))
+                        print(repoSize)
+                        print(storageMax)
 
                         verifyResult = verify_sign(pub_key=publicKey, signature=repoSizeSign, data=repoSize)
                         if verifyResult == False:
+                            print("false")
                             content = {"response":responseList["storage"]}
                             return JsonResponse(data=content, status=status.HTTP_200_OK)
                         verifyResult = verify_sign(pub_key=publicKey, signature=storageMaxSign, data=storageMax)
                         if verifyResult == False:
+                            print("false")
                             content = {"response":responseList["storage"]}
                             return JsonResponse(data=content, status=status.HTTP_200_OK)
 
