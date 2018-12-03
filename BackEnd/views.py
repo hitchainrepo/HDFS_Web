@@ -396,8 +396,8 @@ def webservice(request):
                         publicKey = item.public_key
                         publicKey = base64.b64decode(publicKey)
 
-                        repoSize = str(base64.b64decode(repoSize))
-                        storageMax = str(base64.b64decode(storageMax))
+                        repoSize = str(repoSize)
+                        storageMax = str(storageMax)
                         print(repoSize)
                         print(storageMax)
 
