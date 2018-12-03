@@ -411,8 +411,8 @@ def webservice(request):
                         # update the records in database
                         reportItem = StorageReport()
                         reportItem.node_id = nodeId
-                        reportItem.repo_size = repoSize.encode("utf8")
-                        reportItem.storage_size = storageMax.encode("utf8")
+                        reportItem.repo_size = str(repoSize)
+                        reportItem.storage_size = str(storageMax)
                         currentTime = getCurrentTime()
                         reportItem.create_time = currentTime
                         reportItem.save()
