@@ -396,11 +396,8 @@ def webservice(request):
                         publicKey = item.public_key
                         publicKey = base64.b64decode(publicKey)
 
-                        repoSize = base64.b64decode(repoSize)
-                        storageMax = base64.b64decode(storageMax)
                         print(repoSize)
                         print(storageMax)
-                        print(str(repoSize.decode("utf8")))
 
                         verifyResult = verify_sign(pub_key=publicKey, signature=repoSizeSign, data=repoSize)
                         if verifyResult == False:

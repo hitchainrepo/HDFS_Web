@@ -100,7 +100,7 @@ def verify_sign(pub_key, signature, data):
     rsakey = RSA.importKey(pub_key)
     signer = PKCS1_v1_5.new(rsakey)
     digest = SHA256.new()
-    digest.update(data)
+    digest.update(data.encode("utf8"))
     if signer.verify(digest, b64decode(signature)):
         return True
     return False
@@ -132,4 +132,4 @@ if __name__ == "__main__":
     # print(len(b64_str))
     # key = str2key(pub_key)
     # print(key)
-    verify_sign(pub_key, b"123132123", 100)
+    verify_sign(pub_key, b"123132123", "123123123")
