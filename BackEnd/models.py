@@ -25,8 +25,8 @@ class Authority(models.Model):
 
 class StorageReport(models.Model):
     node_id = models.CharField(max_length=255)
-    repo_size = models.BigIntegerField()
-    storage_size = models.BigIntegerField()
+    repo_size = models.CharField(max_length=255)
+    storage_size = models.CharField(max_length=255)
     create_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
