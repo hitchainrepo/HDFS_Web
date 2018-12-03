@@ -132,4 +132,4 @@ if __name__ == "__main__":
     # print(len(b64_str))
     # key = str2key(pub_key)
     # print(key)
-    verify_sign(pub_key, "1123123", "123123")
+    verify_sign(pub_key, 100, "123123")
