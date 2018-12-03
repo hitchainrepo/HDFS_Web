@@ -389,6 +389,7 @@ def webservice(request):
                             print("find same node id in TemporaryPubKey: " + nodeId)
                         item = items[0]
                         publicKey = item.public_key
+                        print(publicKey)
 
                         verifyResult = verify_sign(pub_key=publicKey, signature=repoSizeSign, data=repoSize)
                         print(verifyResult)
