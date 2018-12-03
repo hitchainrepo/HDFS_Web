@@ -396,8 +396,8 @@ def webservice(request):
                         publicKey = item.public_key
                         publicKey = base64.b64decode(publicKey)
 
-                        repoSize = base64.b64decode(repoSize)
-                        storageMax = base64.b64decode(storageMax)
+                        repoSize = str(base64.b64decode(repoSize))
+                        storageMax = str(base64.b64decode(storageMax))
 
                         verifyResult = verify_sign(pub_key=publicKey, signature=repoSizeSign, data=repoSize)
                         if verifyResult == False:
@@ -411,8 +411,8 @@ def webservice(request):
                         # update the records in database
                         reportItem = StorageReport()
                         reportItem.node_id = nodeId
-                        reportItem.repo_size = str(repoSize)
-                        reportItem.storage_size = str(storageMax)
+                        reportItem.repo_size = repoSize.encode("utf8")
+                        reportItem.storage_size = storageMax.encode("utf8")
                         currentTime = getCurrentTime()
                         reportItem.create_time = currentTime
                         reportItem.save()
