@@ -489,7 +489,8 @@ def webservice(request):
                 else:
                     content = {"response":responseList["request"]}
                     return JsonResponse(data=content, status=status.HTTP_400_BAD_REQUEST)
-        except Exception:
+        except Exception as e:
+            print(e)
             content = {"response": responseList["unknown"]}
             return JsonResponse(data=content, status=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
     elif request.method == 'GET':
