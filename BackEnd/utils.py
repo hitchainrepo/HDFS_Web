@@ -102,7 +102,7 @@ def verify_sign(pub_key, signature, data):
     digest = SHA256.new()
     # Assumes the data is base64 encoded to begin with
     print(data)
-    digest.update(bytearray(data))
+    digest.update(data.encode("utf8"))
     print(signature)
     if signer.verify(digest, b64decode(signature)):
         return True
@@ -135,4 +135,4 @@ if __name__ == "__main__":
     # print(len(b64_str))
     # key = str2key(pub_key)
     # print(key)
-    verify_sign(pub_key, None, None)
+    verify_sign(pub_key, "1123123", "123123")
