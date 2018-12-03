@@ -16,6 +16,8 @@ from django.http import HttpResponseNotAllowed
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 
+import numpy as np
+
 # from django.shortcuts import render,HttpResponse
 # from spyne import Application,rpc,ServiceBase,Iterable,Integer,Unicode
 # from spyne.protocol.soap import Soap11
@@ -406,8 +408,8 @@ def webservice(request):
                         # update the records in database
                         reportItem = StorageReport()
                         reportItem.node_id = nodeId
-                        reportItem.repo_size = repoSize
-                        reportItem.storage_size = storageMax
+                        reportItem.repo_size = np.int64(repoSize)
+                        reportItem.storage_size = np.int64(storageMax)
                         currentTime = getCurrentTime()
                         reportItem.create_time = currentTime
                         reportItem.save()
