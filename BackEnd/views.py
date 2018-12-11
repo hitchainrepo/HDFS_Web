@@ -444,7 +444,6 @@ def webservice(request):
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
                 # check username and password:
                 elif method == "checkUserPassword":
-                    print("in check user password function")
                     if "username" not in data or "password" not in data:
                         content = {"response": responseList["request"]}
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
@@ -515,6 +514,26 @@ def webservice(request):
                         content = {"response": responseList["success"]}
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
 
+                elif method == "initWithUsername":
+                    if "username" not in data or "password" not in data or "nodeId" not in data:
+                        content = {"response": responseList["request"]}
+                        return JsonResponse(data=content, status=status.HTTP_200_OK)
+                    else:
+                        username = data["username"]
+                        password = data["password"]
+                        nodeId = data["nodeId"]
+                        user = auth.authenticate(username = username,password = password)
+                        if user:
+                            # bind the username and the nodeId
+                            item = clients()
+                            item.node_id = nodeId
+                            item.username = username
+                            item.address = request.META['HTTP_X_FORWARDED_FOR']
+                            item.save()
+                            content = {"response":responseList["success"]}
+                        else:
+                            content = {"response":responseList["user"]}
+                        return JsonResponse(data=content, status=status.HTTP_200_OK)
                 else:
                     content = {"response":responseList["request"]}
                     return JsonResponse(data=content, status=status.HTTP_400_BAD_REQUEST)
