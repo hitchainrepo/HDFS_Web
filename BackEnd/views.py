@@ -532,7 +532,6 @@ def webservice(request):
                                 ip = request.META['HTTP_X_FORWARDED_FOR']
                             else:
                                 ip = request.META['REMOTE_ADDR']
-                            print(ip)
                             item.address = ip
                             item.save()
                             content = {"response":responseList["success"]}
