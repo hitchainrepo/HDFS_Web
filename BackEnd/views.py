@@ -444,6 +444,7 @@ def webservice(request):
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
                 # check username and password:
                 elif method == "checkUserPassword":
+                    print("in check user password function")
                     if "username" not in data or "password" not in data:
                         content = {"response": responseList["request"]}
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
