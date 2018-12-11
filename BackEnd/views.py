@@ -528,7 +528,8 @@ def webservice(request):
                             item = clients()
                             item.node_id = nodeId
                             item.username = username
-                            item.address = request.META['HTTP_X_FORWARDED_FOR']
+                            # item.address = request.META['HTTP_X_FORWARDED_FOR']
+                            item.address = "127.0.0.1:40000"
                             item.save()
                             content = {"response":responseList["success"]}
                         else:
