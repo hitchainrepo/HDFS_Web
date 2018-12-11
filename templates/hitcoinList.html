@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+{#    <link href="/static/bootstrap/css/dashboard.css" rel="stylesheet">#}
+
+    <script src="/static/bootstrap/js/jquery-3.2.1.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+{#    <script src="/static/bootstrap/js/holder.min.js"></script>#}
+
+    <meta charset="UTF-8">
+    <title>Hit Chain</title>
+</head>
+<body>
+
+{#    顶部导航#}
+{% include "header.html" %}
+{#    顶部导航 over#}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <table class="table table-hover">
+                    <tr>
+                        <th>node id</th>
+                        <th>online time (h)</th>
+                        <th>hit coin number</th>
+                    </tr>
+                    {% for key, value in rewardDict.items %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value.0 }}</td>
+                        <td>{{ value.1 }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{# 底部导航 #}
+{% include "footer.html" %}
+{# 底部导航 over #}
+
+</body>
+</html>

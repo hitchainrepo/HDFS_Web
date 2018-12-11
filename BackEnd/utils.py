@@ -106,30 +106,4 @@ def verify_sign(pub_key, signature, data):
     return False
 
 if __name__ == "__main__":
-    import pymysql
-    conn = pymysql.Connect(
-        host='47.105.76.115',
-        port=3306,
-        user='root',
-        passwd='pdl123456',
-        db='HDFS_Web',
-        charset='utf8'
-    )
-
-    # 获取游标
-    cursor = conn.cursor()
-    cursor.execute("select public_key from temporary_public_key where id=1")
-    item = cursor.fetchone()
-    pub_key = item[0]
-    print(pub_key)
-    # pub_key = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDC7kw8r6tq43pwApYvkJ5laljaN9BZb21TAIfT/vexbobzH7Q8SUdP5uDPXEBKzOjx2L28y7Xs1d9v3tdPfKI2LR7PAzWBmDMn8riHrDDNpUpJnlAGUqJG9ooPn8j7YNpcxCa1iybOlc2kEhmJn5uwoanQq+CA6agNkqly2H4j6wIDAQAB"
-    # pub_key = "CAASpgIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDAHCzXkhEKdsDJff57_dL8ypmsR01s4h837ZaZYdTDncVuOn24ekCwVeNu6CL-XNTWeyOfESv8ykzbEBVYUV_mubDIuKVFS4IyfHv8SMzj0cpIrpxSW1zqyF4iws6OahAUNTueClQFbU6gmeXZq7vuRb6SbXe5X2O-WAF-93YySCI4Ac1aG6QbgF5umlxJYn2Q6j5igKgaxm4Z9tVHTTXQkhrEY2lN_Zk4NjgrwmedDdtNe1EfHNE8psY2_M2v8YaK5COi-B_zJfKX2Qme0pjnSX_9qMvsNEe8WuAS7zVRlxwSKjcwqoFpDMEAy126GScAgoyeoNoOyUkKJpjx4hhlAgMBAAE="
-    # pub_key = "CAASpgIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDAHCzXkhEKdsDJff57_dL8ypmsR01s4h837ZaZYdTDncVuOn24ekCwVeNu6CL-XNTWeyOfESv8ykzbEBVYUV_mubDIuKVFS4IyfHv8SMzj0cpIrpxSW1zqyF4iws6OahAUNTueClQFbU6gmeXZq7vuRb6SbXe5X2O-WAF-93YySCI4Ac1aG6QbgF5umlxJYn2Q6j5igKgaxm4Z9tVHTTXQkhrEY2lN_Zk4NjgrwmedDdtNe1EfHNE8psY2_M2v8YaK5COi-B_zJfKX2Qme0pjnSX_9qMvsNEe8WuAS7zVRlxwSKjcwqoFpDMEAy126GScAgoyeoNoOyUkKJpjx4hhlAgMBAAE="
-    # pub_key = "1231231231231232132132131231232111111111111111111111111111111111111111111111111111132132131232132132132132132132132132132131232132131231232132132132132132132132132131321321312321321321321321321321321321321321321312312321321321321312321312321321312321321321321321321312321321321321321621784671328472148712487214832413878412874281794821804821804872188647216748128491848371847184314328413483294638370238"
-    pub_key = base64.b64decode(pub_key)
-    print(pub_key)
-    # b64_str = base64.b64decode(pub_key)
-    # print(len(b64_str))
-    # key = str2key(pub_key)
-    # print(key)
-    verify_sign(pub_key, b"123132123", "123123123")
+    print("test")

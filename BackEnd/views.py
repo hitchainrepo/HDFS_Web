@@ -261,6 +261,27 @@ def searchUsername(request):
     return HttpResponse(json.dumps(result), content_type='application/json')
 
 
+def showHitCoinList(request):
+    items = StorageReport.objects.all()
+    rewardDict = {}
+    for item in items:
+        node_id = item.node_id
+        repo_size = item.repo_size
+        storage_size = item.storage_size
+
+        hit_per_bit = 2 / 10000000000
+        reward_repo_size_divide_10G = 0.0
+        for i in range(len(repo_size) - 1, -1, -1):
+            b = int(repo_size[i])
+            reward_repo_size_divide_10G += b * hit_per_bit
+            hit_per_bit *= 10
+
+        rewardDict.setdefault(node_id, (0, 0.0))
+        rewardDict[node_id] = (rewardDict[node_id][0] + 1, rewardDict[node_id][1] + reward_repo_size_divide_10G) # hours
+
+    return render(request, "hitcoinList.html", locals())
+
+
 # add by Nigel start: RESTful API
 @csrf_exempt
 def webservice(request):

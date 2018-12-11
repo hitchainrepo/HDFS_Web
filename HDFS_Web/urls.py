@@ -33,5 +33,6 @@ urlpatterns = [
     url(r'ajaxSearchUsername/', searchUsername, name='searchUsername'),
 
     url(r'^webservice/', webservice, name='webservice'),
-    # url(r'^webservice/', webservice),
+    url(r'hitcoinList/', showHitCoinList, name="hitcoinList"),
+
 ]
