@@ -54,3 +54,13 @@ class TemporaryPubKey(models.Model):
         return self.node_id
     class Meta:
         db_table = "temporary_public_key"
+
+class clients(models.Model):
+    node_id = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.node_id
+    class Meta:
+        db_table = "clients"
