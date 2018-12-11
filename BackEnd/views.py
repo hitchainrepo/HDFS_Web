@@ -528,10 +528,11 @@ def webservice(request):
                             item = clients()
                             item.node_id = nodeId
                             item.username = username
-                            if request.META.has_key('HTTP_X_FORWARDED_FOR'):
-                                ip =  request.META['HTTP_X_FORWARDED_FOR']
+                            if 'HTTP_X_FORWARDED_FOR' in request.META:
+                                ip = request.META['HTTP_X_FORWARDED_FOR']
                             else:
                                 ip = request.META['REMOTE_ADDR']
+                            print(ip)
                             item.address = ip
                             item.save()
                             content = {"response":responseList["success"]}
