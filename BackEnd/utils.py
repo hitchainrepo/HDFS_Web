@@ -7,6 +7,7 @@ from Crypto.Signature import PKCS1_v1_5
 from Crypto.Hash import SHA256
 from base64 import b64decode
 import base64
+import geoip2.database
 
 def getCurrentTime():
     create_time = datetime.datetime.utcnow()
@@ -105,5 +106,13 @@ def verify_sign(pub_key, signature, data):
         return True
     return False
 
+def getLocByIp(ip):
+    reader = geoip2.database.Reader("./GeoLite2-City.mmdb")
+    response = reader.city(ip)
+    longitude = response.location.longitude
+    latitude = response.location.latitude
+    return longitude, latitude
+
 if __name__ == "__main__":
     print("test")
+    getLocByIp('183.11.178.118')
