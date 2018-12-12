@@ -1,49 +1,297 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Bootstrap core CSS -->
-    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+       <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+       <script src="/static/bootstrap/js/jquery-3.2.1.js"></script>
+       <script src="/static/bootstrap/js/bootstrap.min.js"></script>
 
-    <!-- Custom styles for this template -->
-{#    <link href="/static/bootstrap/css/dashboard.css" rel="stylesheet">#}
+       <meta charset="UTF-8">
+       <title>Hit Coin List</title>
+   </head>
+   <body>
+       {#    顶部导航#}
+       {% include "header.html" %}
+       {#    顶部导航 over#}
 
-    <script src="/static/bootstrap/js/jquery-3.2.1.js"></script>
-    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-{#    <script src="/static/bootstrap/js/holder.min.js"></script>#}
+       <div id="container" style="height: 500px; width:600px"></div>
+       <script src="/static/echarts/echarts.min.js"></script>
+       <script src="/static/echarts/echarts-gl.min.js"></script>
+       <script src="/static/echarts/ecStat.min.js"></script>
+       <script src="/static/echarts/dataTool.min.js"></script>
+       <script src="/static/echarts/china.js"></script>
+       <script src="/static/echarts/world.js"></script>
+       <script src="https://api.map.baidu.com/api?v=2.0&ak=2BU5ijs7Cj5vckd42EiUvRODSGtGWfBe"></script>
+       <script src="/static/echarts/bmap.min.js"></script>
+       <script src="/static/echarts/simplex.js"></script>
+       <script type="text/javascript">
+            var dom = document.getElementById("container");
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
 
-    <meta charset="UTF-8">
-    <title>Hit Chain</title>
-</head>
-<body>
+            var data = [
+                {name: '沧州', value: 19}
+            ];
 
-{#    顶部导航#}
-{% include "header.html" %}
-{#    顶部导航 over#}
+            var geoCoordMap = {
+                '沧州':[116.83,38.33]
+            };
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <table class="table table-hover">
-                    <tr>
-                        <th>node id</th>
-                        <th>online time (h)</th>
-                        <th>hit coin number</th>
-                    </tr>
-                    {% for key, value in rewardDict.items %}
-                    <tr>
-                        <td>{{ key }}</td>
-                        <td>{{ value.0 }}</td>
-                        <td>{{ value.1 }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        </div>
-    </div>
-{# 底部导航 #}
-{% include "footer.html" %}
-{# 底部导航 over #}
+            var convertData = function (data) {
+                var res = [];
+                for (var i = 0; i < data.length; i++) {
+                    var geoCoord = geoCoordMap[data[i].name];
+                    if (geoCoord) {
+                        res.push({
+                            name: data[i].name,
+                            value: geoCoord.concat(data[i].value)
+                        });
+                    }
+                }
+                return res;
+            };
 
-</body>
+            function renderItem(params, api) {
+                var color = api.visual('color');
+
+                return {
+                    type: 'polygon',
+                    style: api.style({
+                        fill: color,
+                        stroke: echarts.color.lift(color)
+                    })
+                };
+            }
+
+            option = {
+                // backgroundColor: '#404a59',
+                title: {
+                    text: 'Location of Hitchain nodes',
+            {#        subtext: 'data from PM25.in',#}
+                    sublink: 'http://www.pm25.in',
+                    left: 'center',
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                tooltip : {
+                    trigger: 'item'
+                },
+                bmap: {
+                    center: [104.114129, 37.550339],
+                    zoom: 1,
+                    roam: true,
+                    mapStyle: {
+                        styleJson: [
+                                {
+                                    "featureType": "water",
+                                    "elementType": "all",
+                                    "stylers": {
+                                        "color": "#044161"
+                                    }
+                                },
+                                {
+                                    "featureType": "land",
+                                    "elementType": "all",
+                                    "stylers": {
+                                        "color": "#004981"
+                                    }
+                                },
+                                {
+                                    "featureType": "boundary",
+                                    "elementType": "geometry",
+                                    "stylers": {
+                                        "color": "#064f85"
+                                    }
+                                },
+                                {
+                                    "featureType": "railway",
+                                    "elementType": "all",
+                                    "stylers": {
+                                        "visibility": "off"
+                                    }
+                                },
+                                {
+                                    "featureType": "highway",
+                                    "elementType": "geometry",
+                                    "stylers": {
+                                        "color": "#004981"
+                                    }
+                                },
+                                {
+                                    "featureType": "highway",
+                                    "elementType": "geometry.fill",
+                                    "stylers": {
+                                        "color": "#005b96",
+                                        "lightness": 1
+                                    }
+                                },
+                                {
+                                    "featureType": "highway",
+                                    "elementType": "labels",
+                                    "stylers": {
+                                        "visibility": "off"
+                                    }
+                                },
+                                {
+                                    "featureType": "arterial",
+                                    "elementType": "geometry",
+                                    "stylers": {
+                                        "color": "#004981"
+                                    }
+                                },
+                                {
+                                    "featureType": "arterial",
+                                    "elementType": "geometry.fill",
+                                    "stylers": {
+                                        "color": "#00508b"
+                                    }
+                                },
+                                {
+                                    "featureType": "poi",
+                                    "elementType": "all",
+                                    "stylers": {
+                                        "visibility": "off"
+                                    }
+                                },
+                                {
+                                    "featureType": "green",
+                                    "elementType": "all",
+                                    "stylers": {
+                                        "color": "#056197",
+                                        "visibility": "off"
+                                    }
+                                },
+                                {
+                                    "featureType": "subway",
+                                    "elementType": "all",
+                                    "stylers": {
+                                        "visibility": "off"
+                                    }
+                                },
+                                {
+                                    "featureType": "manmade",
+                                    "elementType": "all",
+                                    "stylers": {
+                                        "visibility": "off"
+                                    }
+                                },
+                                {
+                                    "featureType": "local",
+                                    "elementType": "all",
+                                    "stylers": {
+                                        "visibility": "off"
+                                    }
+                                },
+                                {
+                                    "featureType": "arterial",
+                                    "elementType": "labels",
+                                    "stylers": {
+                                        "visibility": "off"
+                                    }
+                                },
+                                {
+                                    "featureType": "boundary",
+                                    "elementType": "geometry.fill",
+                                    "stylers": {
+                                        "color": "#029fd4"
+                                    }
+                                },
+                                {
+                                    "featureType": "building",
+                                    "elementType": "all",
+                                    "stylers": {
+                                        "color": "#1a5787"
+                                    }
+                                },
+                                {
+                                    "featureType": "label",
+                                    "elementType": "all",
+                                    "stylers": {
+                                        "visibility": "off"
+                                    }
+                                }
+                        ]
+                    }
+                },
+                series : [
+                    {
+                        name: 'pm2.5',
+                        type: 'scatter',
+                        coordinateSystem: 'bmap',
+                        data: convertData(data),
+                        symbolSize: function (val) {
+                            return val[2] / 10;
+                        },
+                        label: {
+                            normal: {
+                                formatter: '{b}',
+                                position: 'right',
+                                show: false
+                            },
+                            emphasis: {
+                                show: true
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: '#ddb926'
+                            }
+                        }
+                    },
+                    {
+                        name: 'Top 5',
+                        type: 'effectScatter',
+                        coordinateSystem: 'bmap',
+                        data: convertData(data.sort(function (a, b) {
+                            return b.value - a.value;
+                        }).slice(0, 6)),
+                        symbolSize: function (val) {
+                            return val[2] / 10;
+                        },
+                        showEffectOn: 'emphasis',
+                        rippleEffect: {
+                            brushType: 'stroke'
+                        },
+                        hoverAnimation: true,
+                        label: {
+                            normal: {
+                                formatter: '{b}',
+                                position: 'right',
+                                show: true
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: '#f4e925',
+                                shadowBlur: 10,
+                                shadowColor: '#333'
+                            }
+                        },
+                        zlevel: 1
+                    },
+                    {
+                        type: 'custom',
+                        coordinateSystem: 'bmap',
+                        renderItem: renderItem,
+                        itemStyle: {
+                            normal: {
+                                opacity: 0.5
+                            }
+                        },
+                        animation: false,
+                        silent: true,
+                        data: [0],
+                        z: -10
+                    }
+                ]
+            };;
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+       </script>
+
+       {% include "footer.html" %}
+   </body>
 </html>
