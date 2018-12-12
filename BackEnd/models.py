@@ -28,6 +28,7 @@ class StorageReport(models.Model):
     repo_size = models.CharField(max_length=255)
     storage_size = models.CharField(max_length=255)
     create_time = models.DateTimeField(auto_now_add=True)
+    address = models.CharField(max_length=255)
 
     def __str__(self):
         return self.node_id
@@ -55,7 +56,7 @@ class TemporaryPubKey(models.Model):
     class Meta:
         db_table = "temporary_public_key"
 
-class clients(models.Model):
+class Clients(models.Model):
     node_id = models.CharField(max_length=255)
     username = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
