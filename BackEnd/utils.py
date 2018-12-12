@@ -106,13 +106,21 @@ def verify_sign(pub_key, signature, data):
         return True
     return False
 
-def getLocByIp(ip):
-    reader = geoip2.database.Reader("./GeoLite2-City.mmdb")
-    response = reader.city(ip)
-    longitude = response.location.longitude
-    latitude = response.location.latitude
-    return longitude, latitude
+def getLocByIpList(ipList):
+    try:
+        result = []
+        reader = geoip2.database.Reader("BackEnd/GeoLite2-City.mmdb")
+        for ip in ipList:
+            response = reader.city(ip)
+            longitude = response.location.longitude
+            latitude = response.location.latitude
+            result.append((longitude, latitude))
+        print(result)
+        return result
+    except Exception as e:
+        print(e)
+        return None
 
 if __name__ == "__main__":
     print("test")
-    getLocByIp('183.11.178.118')
+    print(getLocByIpList(['183.11.178.118']))

@@ -11,6 +11,7 @@ from BackEnd.utils import *
 
 import json
 import re
+import math
 
 from django.http import HttpResponseNotAllowed
 from rest_framework.parsers import JSONParser
@@ -269,15 +270,18 @@ def showHitCoinList(request):
     for item in clientItems:
         node_id = item.node_id
         username = item.username
-        address = item.address
         userMap[node_id] = username
 
-    rewardIdDict = {}
-    rewardUserDict = {}
+    rewardAddDict = {}
+    onlineTime_all = 0
     for item in items:
         node_id = item.node_id
         repo_size = item.repo_size
         storage_size = item.storage_size
+        address = item.address
+
+        if node_id not in userMap:
+            continue
 
         hit_per_bit = 2 / 10000000000
         reward_repo_size_divide_10G = 0.0
@@ -286,11 +290,24 @@ def showHitCoinList(request):
             reward_repo_size_divide_10G += b * hit_per_bit
             hit_per_bit *= 10
 
-        rewardIdDict.setdefault(node_id, (0, 0.0))
-        rewardIdDict[node_id] = (rewardIdDict[node_id][0] + 1, rewardIdDict[node_id][1] + reward_repo_size_divide_10G) # hours
-    for node_id, value in rewardIdDict.items():
-        print("pause")
+        rewardAddDict.setdefault(address, (0, 0.0))
+        rewardAddDict[address] = (rewardAddDict[address][0] + 1, rewardAddDict[address][1] + reward_repo_size_divide_10G) # hours
+        onlineTime_all += 1
+    addresses = list(rewardAddDict.keys())
+    locations = getLocByIpList(addresses)
 
+    longitudes = []
+    latitudes = []
+    hours = []
+
+    for i in range(len(addresses)):
+        add = addresses[i]
+        loc = locations[i]
+        value = rewardAddDict[add]
+
+        longitudes.append(loc[0])
+        latitudes.append(loc[1])
+        hours.append(math.ceil(value[0] / onlineTime_all * 10)) # only record the online time
 
     return render(request, "hitcoinList.html", locals())
 
