@@ -47,8 +47,9 @@
                     var geoCoord = geoCoordMap[data[i].name];
                     if (geoCoord) {
                         res.push({
-                            name: data[i].name,
-                            value: geoCoord.concat(data[i].value)
+{#                            name: data[i].name,#}
+                            name: "",
+                            value: geoCoord.concat(data[i].value + 20)
                         });
                     }
                 }
@@ -72,7 +73,7 @@
                 title: {
                     text: 'Location of Hitchain nodes',
             {#        subtext: 'data from PM25.in',#}
-                    sublink: 'http://www.pm25.in',
+{#                    sublink: 'http://www.pm25.in',#}
                     left: 'center',
                     textStyle: {
                         color: '#fff'
