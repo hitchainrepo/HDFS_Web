@@ -263,7 +263,17 @@ def searchUsername(request):
 
 def showHitCoinList(request):
     items = StorageReport.objects.all()
-    rewardDict = {}
+    clientItems = Clients.objects.all()
+
+    userMap = {}
+    for item in clientItems:
+        node_id = item.node_id
+        username = item.username
+        address = item.address
+        userMap[node_id] = username
+
+    rewardIdDict = {}
+    rewardUserDict = {}
     for item in items:
         node_id = item.node_id
         repo_size = item.repo_size
@@ -276,8 +286,11 @@ def showHitCoinList(request):
             reward_repo_size_divide_10G += b * hit_per_bit
             hit_per_bit *= 10
 
-        rewardDict.setdefault(node_id, (0, 0.0))
-        rewardDict[node_id] = (rewardDict[node_id][0] + 1, rewardDict[node_id][1] + reward_repo_size_divide_10G) # hours
+        rewardIdDict.setdefault(node_id, (0, 0.0))
+        rewardIdDict[node_id] = (rewardIdDict[node_id][0] + 1, rewardIdDict[node_id][1] + reward_repo_size_divide_10G) # hours
+    for node_id, value in rewardIdDict.items():
+        print("pause")
+
 
     return render(request, "hitcoinList.html", locals())
 
@@ -417,9 +430,6 @@ def webservice(request):
                         publicKey = item.public_key
                         publicKey = base64.b64decode(publicKey)
 
-                        print(repoSize)
-                        print(storageMax)
-
                         verifyResult = verify_sign(pub_key=publicKey, signature=repoSizeSign, data=repoSize)
                         if verifyResult == False:
                             print("false")
@@ -431,6 +441,11 @@ def webservice(request):
                             content = {"response":responseList["storage"]}
                             return JsonResponse(data=content, status=status.HTTP_200_OK)
 
+                        if 'HTTP_X_FORWARDED_FOR' in request.META:
+                            ip = request.META['HTTP_X_FORWARDED_FOR']
+                        else:
+                            ip = request.META['REMOTE_ADDR']
+
                         # update the records in database
                         reportItem = StorageReport()
                         reportItem.node_id = nodeId
@@ -438,6 +453,7 @@ def webservice(request):
                         reportItem.storage_size = storageMax
                         currentTime = getCurrentTime()
                         reportItem.create_time = currentTime
+                        reportItem.address = ip
                         reportItem.save()
 
                         content = {"response":responseList["success"]}
@@ -525,7 +541,7 @@ def webservice(request):
                         user = auth.authenticate(username = username,password = password)
                         if user:
                             # bind the username and the nodeId
-                            item = clients()
+                            item = Clients()
                             item.node_id = nodeId
                             item.username = username
                             if 'HTTP_X_FORWARDED_FOR' in request.META:
