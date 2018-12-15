@@ -302,7 +302,8 @@ def showHitCoinList(request):
         context["Error"] = True
         return render(request, "hitcoinList.html", locals())
 
-    print(errorIps)
+    print("location is: ")
+    print(locations)
     for ip in errorIps:
         rewardAddDict.pop(ip)
         addresses.remove(ip)
