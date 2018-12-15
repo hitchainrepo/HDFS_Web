@@ -14,7 +14,16 @@
        {% include "header.html" %}
        {#    顶部导航 over#}
 
-       <div id="container" style="height: 600px"></div>
+       {% if "Error" in context %}
+            <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span>&times;</span>
+                </button>
+                There is something wrong with the map!
+            </div>
+       {% else %}
+           <div id="container" style="height: 600px"></div>
+       {% endif %}
        <script src="/static/echarts/echarts.min.js"></script>
        <script src="/static/echarts/echarts-gl.min.js"></script>
        <script src="/static/echarts/ecStat.min.js"></script>
@@ -30,14 +39,17 @@
             var app = {};
             option = null;
             var data = [];
+            var realData = [];
             var geoCoordMap = {};
 
             var longitudes = {{ longitudes }};
             var latitudes = {{ latitudes }};
             var hours = {{ hours }};
+            var realHours = {{ realHours }};
 
             for (var i=0; i < longitudes.length; i++) {
                 data.push({name: i+1, value: hours[i]});
+                realData.push({name: i+1, value: realHours[i]});
                 geoCoordMap[i+1] = [longitudes[i], latitudes[i]];
             }
 
@@ -106,7 +118,8 @@
                                     "featureType": "boundary",
                                     "elementType": "geometry",
                                     "stylers": {
-                                        "color": "#064f85"
+                                        "color": "#064f85",
+                                        "visibility": "off" // do not show land boundary
                                     }
                                 },
                                 {
@@ -221,12 +234,12 @@
                 },
                 series : [
                     {
-                        name: 'pm2.5',
+                        name: 'online',
                         type: 'scatter',
                         coordinateSystem: 'bmap',
-                        data: convertData(data),
+                        data: convertData(realData),
                         symbolSize: function (val) {
-                            return val[2] / 10;
+                            return val[2] / 5;
                         },
                         label: {
                             normal: {
@@ -243,37 +256,6 @@
                                 color: '#ddb926'
                             }
                         }
-                    },
-                    {
-                        name: 'Top 5',
-                        type: 'effectScatter',
-                        coordinateSystem: 'bmap',
-                        data: convertData(data.sort(function (a, b) {
-                            return b.value - a.value;
-                        }).slice(0, 6)),
-                        symbolSize: function (val) {
-                            return val[2] / 10;
-                        },
-                        showEffectOn: 'emphasis',
-                        rippleEffect: {
-                            brushType: 'stroke'
-                        },
-                        hoverAnimation: true,
-                        label: {
-                            normal: {
-                                formatter: '{b}',
-                                position: 'right',
-                                show: true
-                            }
-                        },
-                        itemStyle: {
-                            normal: {
-                                color: '#f4e925',
-                                shadowBlur: 10,
-                                shadowColor: '#333'
-                            }
-                        },
-                        zlevel: 1
                     },
                     {
                         type: 'custom',

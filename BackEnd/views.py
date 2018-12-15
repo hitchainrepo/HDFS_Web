@@ -12,6 +12,7 @@ from BackEnd.utils import *
 import json
 import re
 import math
+from collections import OrderedDict
 
 from django.http import HttpResponseNotAllowed
 from rest_framework.parsers import JSONParser
@@ -263,6 +264,7 @@ def searchUsername(request):
 
 
 def showHitCoinList(request):
+    context = {}
     items = StorageReport.objects.all()
     clientItems = Clients.objects.all()
 
@@ -272,7 +274,7 @@ def showHitCoinList(request):
         username = item.username
         userMap[node_id] = username
 
-    rewardAddDict = {}
+    rewardAddDict = OrderedDict()
     onlineTime_all = 0
     for item in items:
         node_id = item.node_id
@@ -294,11 +296,21 @@ def showHitCoinList(request):
         rewardAddDict[address] = (rewardAddDict[address][0] + 1, rewardAddDict[address][1] + reward_repo_size_divide_10G) # hours
         onlineTime_all += 1
     addresses = list(rewardAddDict.keys())
-    locations = getLocByIpList(addresses)
+    locations, errorIps = getLocByIpList(addresses)
+
+    if locations == None:
+        context["Error"] = True
+        return render(request, "hitcoinList.html", locals())
+
+    print(errorIps)
+    for ip in errorIps:
+        rewardAddDict.pop(ip)
+        addresses.remove(ip)
 
     longitudes = []
     latitudes = []
     hours = []
+    realHours = []
 
     for i in range(len(addresses)):
         add = addresses[i]
@@ -307,7 +319,8 @@ def showHitCoinList(request):
 
         longitudes.append(loc[0])
         latitudes.append(loc[1])
-        hours.append(math.ceil(value[0] / onlineTime_all * 10)) # only record the online time
+        hours.append(math.ceil(value[0] / onlineTime_all * 30)) # only record the online time
+        realHours.append(value[0])
 
     return render(request, "hitcoinList.html", locals())
 
