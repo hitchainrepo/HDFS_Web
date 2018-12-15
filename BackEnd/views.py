@@ -282,8 +282,13 @@ def showHitCoinList(request):
         storage_size = item.storage_size
         address = item.address
 
+        if address == "127.0.0.1" or address == "localhost":
+            continue
+
         if node_id not in userMap:
             continue
+
+        print(address)
 
         hit_per_bit = 2 / 10000000000
         reward_repo_size_divide_10G = 0.0
