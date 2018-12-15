@@ -120,7 +120,8 @@ def getLocByIpList(ipList):
                 continue
             result.append((longitude, latitude))
         return result, errors
-    except Exception:
+    except Exception as e:
+        print(e)
         return None, None
 
 if __name__ == "__main__":
