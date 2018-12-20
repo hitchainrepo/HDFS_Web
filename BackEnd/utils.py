@@ -126,7 +126,7 @@ def getLocByIpList(ipList):
 
 def getCityByIpList(ipList):
     try:
-        result = []
+        resultMap = {}
         reader = geoip2.database.Reader("./GeoLite2-City.mmdb")
         for ip in ipList:
             response = reader.city(ip)
@@ -135,7 +135,16 @@ def getCityByIpList(ipList):
                 out = response.country.name
                 if out is None:
                     out = response.continent.name
-            result.append(out)
+            if out is None:
+                out = "No Name Place"
+            resultMap.setdefault(out, [])
+            if len(resultMap[out]) == 1:
+                resultMap[out] = [(out+" 1", resultMap[out][0][1]), (out+" 2", ip)]
+            elif len(resultMap[out]) > 1:
+                resultMap[out].append((out+" "+len(resultMap[out]+1), ip))
+            else:
+                resultMap[out].append((out, ip))
+        return resultMap
     except Exception as e:
         print(e)
         return None
