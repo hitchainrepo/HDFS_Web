@@ -127,7 +127,7 @@ def getLocByIpList(ipList):
 def getCityByIpList(ipList):
     try:
         resultMap = {}
-        reader = geoip2.database.Reader("./GeoLite2-City.mmdb")
+        reader = geoip2.database.Reader("BackEnd/GeoLite2-City.mmdb")
         for ip in ipList:
             response = reader.city(ip)
             out = response.city.name
