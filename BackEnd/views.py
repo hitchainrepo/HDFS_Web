@@ -590,6 +590,25 @@ def webservice(request):
                         else:
                             content = {"response":responseList["user"]}
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
+
+                elif method == "getAllServers":
+                    servers = Servers.objects.all()
+                    ipListTmp = []
+                    ipList = []
+                    addressList = []
+                    for server in servers:
+                        nodeId = server.node_id
+                        ip = server.ip
+                        ipListTmp.append(ip)
+                    resultMap = getCityByIpList(ipListTmp)
+                    for tmp, values in resultMap.items():
+                        for value in values:
+                            ipList.append(value[1])
+                            addressList.append(value[0])
+                    ipStr = ".,.".join(ipList)
+                    addressStr = ".,.".join(addressList)
+                    content = {"response":responseList["success"], "ipList":ipStr, "addressList":addressStr}
+                    return JsonResponse(data=content, status=status.HTTP_200_OK)
                 else:
                     content = {"response":responseList["request"]}
                     return JsonResponse(data=content, status=status.HTTP_400_BAD_REQUEST)
