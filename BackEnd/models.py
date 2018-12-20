@@ -65,3 +65,12 @@ class Clients(models.Model):
         return self.node_id
     class Meta:
         db_table = "clients"
+
+class Servers(models.Model):
+    node_id = models.CharField(max_length=255)
+    ip = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.node_id
+    class Meta:
+        db_table = "servers"
