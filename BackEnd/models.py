@@ -69,6 +69,7 @@ class Clients(models.Model):
 class Servers(models.Model):
     node_id = models.CharField(max_length=255)
     ip = models.CharField(max_length=255)
+    connect_to_id = models.CharField(max_length=255, default=None) # this is the server that the current server connect to; None means connect to None
 
     def __str__(self):
         return self.node_id
