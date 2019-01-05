@@ -609,6 +609,19 @@ def webservice(request):
                     addressStr = ".,.".join(addressList)
                     content = {"response":responseList["success"], "ipList":ipStr, "addressList":addressStr}
                     return JsonResponse(data=content, status=status.HTTP_200_OK)
+                elif method == "getAllServersWithoutAddress": # get ipList and the related nodeId
+                    servers = Servers.objects.all()
+                    ipList = []
+                    idList = []
+                    for server in servers:
+                        nodeId = server.node_id
+                        ip = server.ip
+                        ipList.append(ip)
+                        idList.append(nodeId)
+                    ipStr = ".,.".join(ipList)
+                    idStr = ".,.".join(idList)
+                    content = {"response":responseList["success"], "ipList":ipStr, "idList":idStr}
+                    return JsonResponse(data=content, status=status.HTTP_200_OK)
                 else:
                     content = {"response":responseList["request"]}
                     return JsonResponse(data=content, status=status.HTTP_400_BAD_REQUEST)
