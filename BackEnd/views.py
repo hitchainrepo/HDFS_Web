@@ -633,15 +633,9 @@ def webservice(request):
                             ip = request.META['HTTP_X_FORWARDED_FOR']
                         else:
                             ip = request.META['REMOTE_ADDR']
-                        print(ip)
-                        if "connectToId" not in data:
-                            connectToId = None
-                        else:
-                            connectToId = data["connectToId"]
                         serverItem = Servers()
                         serverItem.node_id = nodeId
                         serverItem.ip = ip
-                        serverItem.connect_to_id = ""
                         serverItem.save()
                         content = {"response":responseList["success"]}
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
