@@ -623,12 +623,17 @@ def webservice(request):
                     content = {"response":responseList["success"], "ipList":ipStr, "idList":idStr}
                     return JsonResponse(data=content, status=status.HTTP_200_OK)
                 elif method == "addServer": # add a server to the database
-                    if "nodeId" not in data or "ip" not in data:
+                    if "nodeId" not in data:
                         content = {"response": responseList["request"]}
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
                     else:
                         nodeId = data["nodeId"]
-                        ip = data["ip"]
+
+                        if 'HTTP_X_FORWARDED_FOR' in request.META: # get the ip address in server
+                            ip = request.META['HTTP_X_FORWARDED_FOR']
+                        else:
+                            ip = request.META['REMOTE_ADDR']
+
                         if "connectToId" not in data:
                             connectToId = None
                         else:
