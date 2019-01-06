@@ -641,7 +641,7 @@ def webservice(request):
                         serverItem = Servers()
                         serverItem.node_id = nodeId
                         serverItem.ip = ip
-                        serverItem.connect_to_id = None
+                        serverItem.connect_to_id = ""
                         serverItem.save()
                         content = {"response":responseList["success"]}
                         return JsonResponse(data=content, status=status.HTTP_200_OK)
