@@ -141,6 +141,8 @@ def getCityByIpList(ipList):
             if len(resultMap[out]) == 1:
                 resultMap[out] = [(out+" 1", resultMap[out][0][1]), (out+" 2", ip)]
             elif len(resultMap[out]) > 1:
+                print(len(resultMap[out]) + 1)
+                print(out+" "+(len(resultMap[out]) + 1))
                 resultMap[out].append((out+" "+(len(resultMap[out]) + 1), ip))
             else:
                 resultMap[out].append((out, ip))
