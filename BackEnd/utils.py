@@ -139,11 +139,9 @@ def getCityByIpList(ipList):
                 out = "No Name Place"
             resultMap.setdefault(out, [])
             if len(resultMap[out]) == 1:
-                print("in this line: 142")
-                print(resultMap[out])
                 resultMap[out] = [(out+" 1", resultMap[out][0][1]), (out+" 2", ip)]
             elif len(resultMap[out]) > 1:
-                resultMap[out].append((out+" "+len(resultMap[out]+1), ip))
+                resultMap[out].append((out+" "+(len(resultMap[out]) + 1), ip))
             else:
                 resultMap[out].append((out, ip))
         return resultMap
