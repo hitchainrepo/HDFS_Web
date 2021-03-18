@@ -16,7 +16,7 @@ packaging==16.8
 pandas==0.20.3
 pandocfilters==1.4.2
 pickleshare==0.7.4
-Pillow==4.2.1
+Pillow==8.1.1
 prompt-toolkit==1.0.15
 protobuf==3.5.1
 PyMySQL==0.7.9
