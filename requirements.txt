@@ -38,5 +38,5 @@ statsmodels==0.8.0
 suds-jurko==0.6
 testpath==0.3
 typing==3.6.2
-urllib3==1.21.1
+urllib3==1.26.5
 configparser==3.5.0
